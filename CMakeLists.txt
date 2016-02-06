@@ -15,6 +15,7 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 # -----------------------------------------------------------------------------
 
 include(Utility) # general utility
+include(WetSandbox)
 
 # -----------------------------------------------------------------------------
 # Global Variables
