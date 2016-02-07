@@ -64,6 +64,37 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ${CONFIG_USE_SOLUTION_FOLDERS})
 # Third Party Libraries
 # -----------------------------------------------------------------------------
 
+include(ExternalProject)
+set_directory_properties(PROPERTIES EP_PREFIX ${CMAKE_BINARY_DIR}/ext)
+
+
+# thread library
+find_package(Threads REQUIRED)
+
+# googletest
+ExternalProject_Add(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG a9b73f8139a92315f37e48a3ff3d43e3929055bc
+  TIMEOUT 10
+  # configure step
+  # Force separate output paths for debug and release builds to allow easy
+  # identification of correct lib in subsequent TARGET_LINK_LIBRARIES commands
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+             -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG:PATH=DebugLibs
+             -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE:PATH=ReleaseLibs
+             -Dgtest_force_shared_crt=ON
+  # install step (deactivate)
+  INSTALL_COMMAND ""
+  # output logging
+  LOG_DOWNLOAD ON
+  LOG_UPDATE ON
+  LOG_CONFIGURE ON
+  LOG_BUILD ON
+  LOG_TEST ON
+  LOG_INSTALL ON
+)
+
 # -----------------------------------------------------------------------------
 # Source
 # -----------------------------------------------------------------------------
